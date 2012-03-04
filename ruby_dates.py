@@ -1,23 +1,29 @@
 from datetime import datetime, timedelta
 
+
 class DateNumber(object):
 
+    def __init__(self, date):
+        self.now = date
+
     def __getitem__(self, attr):
-        return Number(attr)
+        return DateUnits(self.now, attr)
 
 
-class Number(object):
+class DateUnits(object):
 
-    def __init__(self, number):
+    def __init__(self, date, number):
+        self.date = date
         self.number = number
 
     def __getattr__(self, attr):
-        return Direction(self.number, attr)
+        return DateDirection(self.date, self.number, attr)
 
 
-class Direction(object):
+class DateDirection(object):
 
-    def __init__(self, number, units):
+    def __init__(self, date, number, units):
+        self.date = date
         self.number = number
         self.units = units
 
@@ -30,5 +36,4 @@ class Direction(object):
         return self.delta(1)
 
     def delta(self, direction):
-        return datetime.utcnow() + timedelta(
-            **{self.units: direction * self.number})
+        return self.date + timedelta(**{self.units: direction * self.number})
