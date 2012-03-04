@@ -9,6 +9,8 @@ class DateNumber(object):
     def __getitem__(self, attr):
         return DateUnits(self.now, attr)
 
+    __call__ = __getitem__
+
 
 class DateUnits(object):
 
